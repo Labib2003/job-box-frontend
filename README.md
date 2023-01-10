@@ -22,14 +22,14 @@ In this task, you will add an extra section to the Jobbox application shown in m
 
 # Tasks:
 
-## Employer:
+### Employer:
 
 - The Employer can see the application count for an open position.
 - The employer can close any position at any time.
 - He/she should be able to see the candidate's detail information.
 - The employer can send a direct message to the candidate.
 
-## Candidate:
+### Candidate:
 
 - Candidates can filter the "applied job" based on date and approval state.
 - Candidates can reply to the direct message, like a **real-time** chat application.
@@ -41,7 +41,7 @@ In this task, you will add an extra section to the Jobbox application shown in m
 - You need to keep Redux Dev Tool active. DO NOT DISABLE REACT DEV TOOL (This is important for cross-checking your assignment.)
 
 # Deadline: 
-Saturday 13 December thill 11:59 pm
+Saturday 13 January thill 11:59 pm
 
 # What you need to Submit ?
 Live link of frontend code and Github repo link
