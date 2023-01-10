@@ -39,9 +39,13 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logOut: (state) => {
+      state.user = initialState.user;
+    },
+  },
   extraReducers: (builder) => {
-    // firebase related apis
+    // create user
     builder
       .addCase(createUser.pending, (state, action) => {
         state.isLoading = true;
@@ -61,7 +65,29 @@ const authSlice = createSlice({
         state.error = action.error.message;
         state.user = initialState.user;
       });
+
+    // login
+    builder
+      .addCase(login.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = "";
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.error = "";
+        // email is returned from the thunkApi as payload
+        state.user.email = action.payload;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error.message;
+        state.user = initialState.user;
+      });
   },
 });
 
+export const { logOut } = authSlice.actions;
 export default authSlice.reducer;
