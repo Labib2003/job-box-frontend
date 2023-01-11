@@ -11,7 +11,6 @@ const CandidateRegistration = () => {
   const term = useWatch({ control, name: "term" });
   const navigate = useNavigate();
   const [postUser, { isLoading, isError }] = useRegisterMutation();
-  const dispatch = useDispatch();
   const { email } = useSelector((state) => state.auth.user);
 
   useEffect(() => {
