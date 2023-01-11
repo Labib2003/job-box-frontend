@@ -41,10 +41,9 @@ export const getUser = createAsyncThunk(
   async (email, thunkApi) => {
     const response = await fetch(`http://localhost:5000/api/users/${email}`);
     const data = await response.json();
-    console.log(data);
 
     if (data.success) {
-      console.log("user found in db")
+      console.log("user found in db");
       return data;
     } else {
       console.log("unregistered user");

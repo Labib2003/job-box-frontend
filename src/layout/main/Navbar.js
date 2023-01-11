@@ -31,23 +31,44 @@ const Navbar = () => {
           </Link>
         </li>
 
-        <li>
-          {email ? (
-            <button
-              onClick={handleLogout}
-              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
-            >
-              Logout
-            </button>
-          ) : (
+        {!email ? (
+          <li>
             <Link
               className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
               to="/login"
             >
               Login
             </Link>
-          )}
-        </li>
+          </li>
+        ) : (
+          <li>
+            <button
+              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
+              onClick={handleLogout}
+            >
+              Log Out
+            </button>
+          </li>
+        )}
+        {(email && role && (
+          <li>
+            <Link
+              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
+              to="/dashboard"
+            >
+              Dashboard
+            </Link>
+          </li>
+        )) || (
+          <li>
+            <Link
+              className="border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all "
+              to="/register"
+            >
+              Get started
+            </Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
