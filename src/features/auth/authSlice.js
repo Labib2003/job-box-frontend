@@ -35,6 +35,24 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
   return response.user.email;
 });
 
+// user thunk apis
+export const getUser = createAsyncThunk(
+  "auth/getUser",
+  async (email, thunkApi) => {
+    const response = await fetch(`http://localhost:5000/api/users/${email}`);
+    const data = await response.json();
+    console.log(data);
+
+    if (data.success) {
+      console.log("user found in db")
+      return data;
+    } else {
+      console.log("unregistered user");
+      return email;
+    }
+  }
+);
+
 // actual slice
 const authSlice = createSlice({
   name: "auth",
@@ -81,6 +99,30 @@ const authSlice = createSlice({
         state.user.email = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.error = action.error.message;
+        state.user = initialState.user;
+      });
+
+    // get user
+    builder
+      .addCase(getUser.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.error = "";
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.error = "";
+        if (action.payload.success) {
+          state.user = action.payload.data;
+        } else {
+          state.user.email = action.payload;
+        }
+      })
+      .addCase(getUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
