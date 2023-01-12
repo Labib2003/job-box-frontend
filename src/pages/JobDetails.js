@@ -72,7 +72,7 @@ const JobDetails = () => {
                 Close this position
               </button>
             ) : (
-              <button className="btn" onClick={handleApply}>
+              <button disabled={!isOpen} className="btn" onClick={handleApply}>
                 Apply
               </button>
             )}
