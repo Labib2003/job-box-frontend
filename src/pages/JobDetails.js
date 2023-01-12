@@ -8,6 +8,7 @@ import {
   useGetJobByIdQuery,
   useHireCandidateMutation,
   usePostQueryMutation,
+  useReplyQueryMutation,
 } from "../features/job/jobApi";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -20,6 +21,7 @@ const JobDetails = () => {
   const { email, role } = useSelector((state) => state.auth.user);
   const [hireCandidate, {}] = useHireCandidateMutation();
   const [postQuery, {}] = usePostQueryMutation();
+  const [postReply, {}] = useReplyQueryMutation();
 
   const questionRef = useRef("");
 
@@ -66,6 +68,18 @@ const JobDetails = () => {
         data: { email: email, question: questionRef.current.value },
       });
       questionRef.current.value = "";
+    }
+  };
+
+  const handleQueryReply = (e, queryId) => {
+    e.preventDefault();
+    console.log(e.target[0].value, queryId);
+    if (e.target[0].value.length) {
+      postReply({
+        jobId: _id,
+        data: { queryId: queryId, answer: e.target[0].value },
+      });
+      e.target[0].value = "";
     }
   };
 
@@ -185,9 +199,9 @@ const JobDetails = () => {
               General Q&A
             </h1>
             <div className="text-primary my-2">
-              {queries?.map(({ question, email, reply, id }) => (
+              {queries?.map(({ question, email: userEmail, reply, _id }) => (
                 <div className="px-5">
-                  <small>{email}</small>
+                  <small>{userEmail}</small>
                   <p className="text-lg font-medium">{question}</p>
                   {reply?.map((item) => (
                     <p className="flex items-center gap-2 relative left-5">
@@ -197,17 +211,19 @@ const JobDetails = () => {
 
                   {role === "employer" && email === postedBy && (
                     <div className="flex gap-3 my-5">
-                      <input
-                        placeholder="Reply"
-                        type="text"
-                        className="w-full"
-                      />
-                      <button
-                        className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                        type="button"
-                      >
-                        <BsArrowRightShort size={30} />
-                      </button>
+                      <form onSubmit={(e) => handleQueryReply(e, _id)}>
+                        <input
+                          placeholder="Reply"
+                          type="text"
+                          className="w-full"
+                        />
+                        <button
+                          className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                          type="submit"
+                        >
+                          <BsArrowRightShort size={30} />
+                        </button>
+                      </form>
                     </div>
                   )}
                 </div>
