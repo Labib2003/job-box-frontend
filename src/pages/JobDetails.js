@@ -6,6 +6,7 @@ import {
   useApplyToJobMutation,
   useCloseJobMutation,
   useGetJobByIdQuery,
+  useHireCandidateMutation,
 } from "../features/job/jobApi";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -16,6 +17,7 @@ const JobDetails = () => {
   const [applyToJob, {}] = useApplyToJobMutation();
   const [closeJob, {}] = useCloseJobMutation();
   const { email, role } = useSelector((state) => state.auth.user);
+  const [hireCandidate, {}] = useHireCandidateMutation();
 
   const {
     companyName,
@@ -46,6 +48,11 @@ const JobDetails = () => {
 
   const handleCloseJob = () => {
     closeJob(_id);
+  };
+
+  const handleHireCandidate = (candidateData) => {
+    console.log(candidateData);
+    hireCandidate({ jobId: _id, candidateData: candidateData });
   };
 
   return (
@@ -127,7 +134,10 @@ const JobDetails = () => {
                 {applicants?.map((applicant) => (
                   <tr>
                     <td className="p-3">
-                      <Link to={`/candidate-details/${applicant.email}`} className="text-blue-500 underline">
+                      <Link
+                        to={`/candidate-details/${applicant.email}`}
+                        className="text-blue-500 underline"
+                      >
                         {applicant.email}
                       </Link>
                     </td>
@@ -135,7 +145,14 @@ const JobDetails = () => {
                       {applicant.approved ? (
                         "Hired"
                       ) : (
-                        <button className="btn">Hire</button>
+                        <button
+                          className="btn"
+                          onClick={() =>
+                            handleHireCandidate({ email: applicant.email })
+                          }
+                        >
+                          Hire
+                        </button>
                       )}
                     </td>
                     <td className="p-3">

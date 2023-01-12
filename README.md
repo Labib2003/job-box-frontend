@@ -24,15 +24,15 @@ In this task, you will add an extra section to the Jobbox application shown in m
 
 ### Employer:
 
-- The Employer can see the application count for an open position.
-- The employer can close any position at any time.
-- He/she should be able to see the candidate's detail information.
-- The employer can send a direct message to the candidate.
+- [x] The Employer can see the application count for an open position.
+- [x] The employer can close any position at any time.
+- [x] He/she should be able to see the candidate's detail information.
+- [] The employer can send a direct message to the candidate.
 
 ### Candidate:
 
-- Candidates can filter the "applied job" based on date and approval state.
-- Candidates can reply to the direct message, like a **real-time** chat application.
+- [] Candidates can filter the "applied job" based on date and approval state.
+- [] Candidates can reply to the direct message, like a **real-time** chat application.
 
 # Note:
 - You need to implement user authentication.
