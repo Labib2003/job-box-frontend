@@ -2,11 +2,18 @@ import React from "react";
 
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
-import { useGetJobByIdQuery } from "../features/job/jobApi";
+import {
+  useApplyToJobMutation,
+  useGetJobByIdQuery,
+} from "../features/job/jobApi";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useGetJobByIdQuery(id);
+  const { data } = useGetJobByIdQuery(id);
+  const [applyToJob, { isSuccess, error }] = useApplyToJobMutation();
+  const { email, role } = useSelector((state) => state.auth.user);
 
   const {
     companyName,
@@ -22,7 +29,15 @@ const JobDetails = () => {
     overview,
     queries,
     _id,
-  } = data?.data;
+  } = data?.data || {};
+
+  const handleApply = () => {
+    if (role === "employer") {
+      return toast.error("Cannot apply with an employer account.");
+    }
+    console.log(email);
+    applyToJob({ jobId: _id, candidateData: { email: email } });
+  };
 
   return (
     <div className="pt-14 grid grid-cols-12 gap-5">
@@ -33,7 +48,9 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            <button className="btn">Apply</button>
+            <button className="btn" onClick={handleApply}>
+              Apply
+            </button>
           </div>
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
