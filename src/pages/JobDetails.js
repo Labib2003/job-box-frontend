@@ -4,6 +4,7 @@ import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
 import {
   useApplyToJobMutation,
+  useCloseJobMutation,
   useGetJobByIdQuery,
 } from "../features/job/jobApi";
 import { useParams } from "react-router-dom";
@@ -12,7 +13,8 @@ import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
   const { data } = useGetJobByIdQuery(id);
-  const [applyToJob, { isSuccess, error }] = useApplyToJobMutation();
+  const [applyToJob, {}] = useApplyToJobMutation();
+  const [closeJob, {}] = useCloseJobMutation();
   const { email, role } = useSelector((state) => state.auth.user);
 
   const {
@@ -29,6 +31,9 @@ const JobDetails = () => {
     overview,
     queries,
     _id,
+    applicants,
+    isOpen,
+    postedBy,
   } = data?.data || {};
 
   const handleApply = () => {
@@ -37,6 +42,10 @@ const JobDetails = () => {
     }
     console.log(email);
     applyToJob({ jobId: _id, candidateData: { email: email } });
+  };
+
+  const handleCloseJob = () => {
+    closeJob(_id);
   };
 
   return (
@@ -48,9 +57,18 @@ const JobDetails = () => {
         <div className="space-y-5">
           <div className="flex justify-between items-center mt-5">
             <h1 className="text-xl font-semibold text-primary">{position}</h1>
-            <button className="btn" onClick={handleApply}>
-              Apply
-            </button>
+            <h1 className="text-xl font-semibold text-primary">
+              Status: {isOpen ? "OPEN" : "CLOSED"}
+            </h1>
+            {(role === "employer" && email === postedBy) ? (
+              <button className="btn" onClick={handleCloseJob}>
+                Close this position
+              </button>
+            ) : (
+              <button className="btn" onClick={handleApply}>
+                Apply
+              </button>
+            )}
           </div>
           <div>
             <h1 className="text-primary text-lg font-medium mb-3">Overview</h1>
@@ -91,6 +109,40 @@ const JobDetails = () => {
             </ul>
           </div>
         </div>
+        <hr className="my-5" />
+        {(role === "employer" && email === postedBy) && (
+          <div>
+            <p className="font-semibold text-lg">
+              Applications for this position: {applicants?.length}
+            </p>
+            <table className="border-collapse border w-full">
+              <thead className="border text-left">
+                <tr>
+                  <th className="p-3 text-lg">Email</th>
+                  <th className="p-3 text-lg">State</th>
+                  <th className="p-3 text-lg">Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                {applicants?.map((applicant) => (
+                  <tr>
+                    <td className="p-3">{applicant.email}</td>
+                    <td className="p-3">
+                      {applicant.approved ? (
+                        "Hired"
+                      ) : (
+                        <button className="btn">Hire</button>
+                      )}
+                    </td>
+                    <td className="p-3">
+                      <button className="btn">Contact Candidate</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
         <hr className="my-5" />
         <div>
           <div>
