@@ -26,7 +26,10 @@ const AddJob = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    postJob({ ...data, postedBy: email, applicants: [], queries: [] });
+    postJob({
+      ...data,
+      postedBy: email,
+    });
   };
 
   return (
