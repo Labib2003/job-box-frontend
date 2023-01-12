@@ -53,6 +53,14 @@ const jobApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Job"],
     }),
+    postQuery: builder.mutation({
+      query: ({ jobId, data }) => ({
+        url: `/jobs/query/${jobId}`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: ["Job"],
+    }),
   }),
 });
 
@@ -65,4 +73,5 @@ export const {
   useApplyToJobMutation,
   useCloseJobMutation,
   useHireCandidateMutation,
+  usePostQueryMutation,
 } = jobApi;

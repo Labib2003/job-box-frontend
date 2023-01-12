@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import meeting from "../assets/meeting.jpg";
 import { BsArrowRightShort, BsArrowReturnRight } from "react-icons/bs";
@@ -7,6 +7,7 @@ import {
   useCloseJobMutation,
   useGetJobByIdQuery,
   useHireCandidateMutation,
+  usePostQueryMutation,
 } from "../features/job/jobApi";
 import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -18,6 +19,9 @@ const JobDetails = () => {
   const [closeJob, {}] = useCloseJobMutation();
   const { email, role } = useSelector((state) => state.auth.user);
   const [hireCandidate, {}] = useHireCandidateMutation();
+  const [postQuery, {}] = usePostQueryMutation();
+
+  const questionRef = useRef("");
 
   const {
     companyName,
@@ -53,6 +57,16 @@ const JobDetails = () => {
   const handleHireCandidate = (candidateData) => {
     console.log(candidateData);
     hireCandidate({ jobId: _id, candidateData: candidateData });
+  };
+
+  const handleSubmitQuery = () => {
+    if (questionRef.current.value.length) {
+      postQuery({
+        jobId: _id,
+        data: { email: email, question: questionRef.current.value },
+      });
+      questionRef.current.value = "";
+    }
   };
 
   return (
@@ -172,7 +186,7 @@ const JobDetails = () => {
             </h1>
             <div className="text-primary my-2">
               {queries?.map(({ question, email, reply, id }) => (
-                <div>
+                <div className="px-5">
                   <small>{email}</small>
                   <p className="text-lg font-medium">{question}</p>
                   {reply?.map((item) => (
@@ -181,15 +195,21 @@ const JobDetails = () => {
                     </p>
                   ))}
 
-                  <div className="flex gap-3 my-5">
-                    <input placeholder="Reply" type="text" className="w-full" />
-                    <button
-                      className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                      type="button"
-                    >
-                      <BsArrowRightShort size={30} />
-                    </button>
-                  </div>
+                  {role === "employer" && email === postedBy && (
+                    <div className="flex gap-3 my-5">
+                      <input
+                        placeholder="Reply"
+                        type="text"
+                        className="w-full"
+                      />
+                      <button
+                        className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                        type="button"
+                      >
+                        <BsArrowRightShort size={30} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -199,10 +219,12 @@ const JobDetails = () => {
                 placeholder="Ask a question..."
                 type="text"
                 className="w-full"
+                ref={questionRef}
               />
               <button
                 className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
                 type="button"
+                onClick={handleSubmitQuery}
               >
                 <BsArrowRightShort size={30} />
               </button>
