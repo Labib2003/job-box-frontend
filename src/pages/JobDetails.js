@@ -7,7 +7,7 @@ import {
   useCloseJobMutation,
   useGetJobByIdQuery,
 } from "../features/job/jobApi";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 const JobDetails = () => {
@@ -60,7 +60,7 @@ const JobDetails = () => {
             <h1 className="text-xl font-semibold text-primary">
               Status: {isOpen ? "OPEN" : "CLOSED"}
             </h1>
-            {(role === "employer" && email === postedBy) ? (
+            {role === "employer" && email === postedBy ? (
               <button className="btn" onClick={handleCloseJob}>
                 Close this position
               </button>
@@ -110,7 +110,7 @@ const JobDetails = () => {
           </div>
         </div>
         <hr className="my-5" />
-        {(role === "employer" && email === postedBy) && (
+        {role === "employer" && email === postedBy && (
           <div>
             <p className="font-semibold text-lg">
               Applications for this position: {applicants?.length}
@@ -126,7 +126,11 @@ const JobDetails = () => {
               <tbody>
                 {applicants?.map((applicant) => (
                   <tr>
-                    <td className="p-3">{applicant.email}</td>
+                    <td className="p-3">
+                      <Link to={`/candidate-details/${applicant.email}`} className="text-blue-500 underline">
+                        {applicant.email}
+                      </Link>
+                    </td>
                     <td className="p-3">
                       {applicant.approved ? (
                         "Hired"
