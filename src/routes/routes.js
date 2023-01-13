@@ -14,6 +14,9 @@ import CandidateDashboard from "../pages/candidateDashboard/CandidateDashboard";
 import JobsPostedByEmployer from "../pages/employeeDashboard/JobsPostedByEmployer";
 import AppliedJobs from "../pages/candidateDashboard/AppliedJobs";
 import CandidateDetails from "../pages/employeeDashboard/CandidateDetails";
+import DirectMessages from "../pages/employeeDashboard/DirectMessagesForEmployer";
+import DirectMessagesForEmployer from "../pages/employeeDashboard/DirectMessagesForEmployer";
+import DirectMessageForCandidate from "../pages/candidateDashboard/DirectMessageForCandidate";
 
 const routes = createBrowserRouter([
   {
@@ -77,6 +80,14 @@ const routes = createBrowserRouter([
       {
         path: "job-applied-by-candidate",
         element: <AppliedJobs />,
+      },
+      {
+        path: "messages/employer/:email",
+        element: <DirectMessagesForEmployer />
+      },
+      {
+        path: "messages/candidate/:email",
+        element: <DirectMessageForCandidate />
       },
       {
         path: "employer",

@@ -184,7 +184,7 @@ const JobDetails = () => {
                       )}
                     </td>
                     <td className="p-3">
-                      <button className="btn">Contact Candidate</button>
+                      <Link to={`/dashboard/messages/employer/${applicant.email}`} className="btn">Contact Candidate</Link>
                     </td>
                   </tr>
                 ))}
