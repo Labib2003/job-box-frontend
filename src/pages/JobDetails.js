@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 const JobDetails = () => {
   const { id } = useParams();
-  const { data } = useGetJobByIdQuery(id);
+  const { data } = useGetJobByIdQuery(id, { pollingInterval: 1000 });
   const [applyToJob, {}] = useApplyToJobMutation();
   const [closeJob, {}] = useCloseJobMutation();
   const { email, role } = useSelector((state) => state.auth.user);
@@ -184,7 +184,12 @@ const JobDetails = () => {
                       )}
                     </td>
                     <td className="p-3">
-                      <Link to={`/dashboard/messages/employer/${applicant.email}`} className="btn">Contact Candidate</Link>
+                      <Link
+                        to={`/dashboard/messages/employer/${applicant.email}`}
+                        className="btn"
+                      >
+                        Contact Candidate
+                      </Link>
                     </td>
                   </tr>
                 ))}
@@ -210,8 +215,8 @@ const JobDetails = () => {
                   ))}
 
                   {role === "employer" && email === postedBy && (
-                    <div className="flex gap-3 my-5">
-                      <form onSubmit={(e) => handleQueryReply(e, _id)}>
+                    <div className="my-5">
+                      <form className="flex gap-3" onSubmit={(e) => handleQueryReply(e, _id)}>
                         <input
                           placeholder="Reply"
                           type="text"
@@ -230,21 +235,23 @@ const JobDetails = () => {
               ))}
             </div>
 
-            <div className="flex gap-3 my-5">
-              <input
-                placeholder="Ask a question..."
-                type="text"
-                className="w-full"
-                ref={questionRef}
-              />
-              <button
-                className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
-                type="button"
-                onClick={handleSubmitQuery}
-              >
-                <BsArrowRightShort size={30} />
-              </button>
-            </div>
+            {role === "candidate" && (
+              <div className="flex gap-3 my-5">
+                <input
+                  placeholder="Ask a question..."
+                  type="text"
+                  className="w-full"
+                  ref={questionRef}
+                />
+                <button
+                  className="shrink-0 h-14 w-14 bg-primary/10 border border-primary hover:bg-primary rounded-full transition-all  grid place-items-center text-primary hover:text-white"
+                  type="button"
+                  onClick={handleSubmitQuery}
+                >
+                  <BsArrowRightShort size={30} />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
