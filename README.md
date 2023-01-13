@@ -2,9 +2,7 @@
 
 This project is an **assignment** of the **Programming Hero Redux Advanced Crash Course**. The frontend ui was provided in a [starter kit](https://github.com/mir-hussain/jobbox-starter). I implemented the backend and the **state management** part in the frontend with `Redux`. The **assignment requirements** are given below.
 
-Frontend Code
-
-Live Demo
+Link to the [Back-end code](https://github.com/Labib2003/job-box-backend) and the [Live demo](https://jobbox-4b283.web.app/).
 
 # Assignment Name:
 
