@@ -39,7 +39,7 @@ export const login = createAsyncThunk("auth/login", async (data, thunkApi) => {
 export const getUser = createAsyncThunk(
   "auth/getUser",
   async (email, thunkApi) => {
-    const response = await fetch(`http://localhost:5000/api/users/${email}`);
+    const response = await fetch(`https://job-box-backend.onrender.com/api/users/${email}`);
     const data = await response.json();
 
     if (data.success) {

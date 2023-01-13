@@ -6,7 +6,7 @@ import { useGetDmsQuery } from "../../features/dm/dmApi";
 const Sidebar = () => {
   let oppositeRole = "";
   const { email, role } = useSelector((state) => state.auth.user);
-  const { data } = useGetDmsQuery({ role, email }, {pollingInterval: 500});
+  const { data } = useGetDmsQuery({ role, email }, { pollingInterval: 500 });
 
   if (role === "employer") oppositeRole = "candidate";
   else oppositeRole = "employer";
@@ -43,11 +43,11 @@ const Sidebar = () => {
             </li>
             <h1 className="text-xl">Direct Messages</h1>
             {data?.data?.map((dm) => (
-              <li className="hover:bg-primary hover:text-white bg-primary/10 transition-all w-full block py-2 px-3 rounded-full">
-                <Link to={`messages/employer/${dm.candidate}`}>
+              <Link to={`messages/employer/${dm.candidate}`}>
+                <li className="hover:bg-primary hover:text-white bg-primary/10 transition-all w-full block py-2 px-3 rounded-full">
                   {dm[oppositeRole]}
-                </Link>
-              </li>
+                </li>
+              </Link>
             ))}
           </>
         )}
@@ -63,11 +63,11 @@ const Sidebar = () => {
             </li>
             <h1 className="text-xl">Direct Messages</h1>
             {data?.data?.map((dm) => (
-              <li className="hover:bg-primary hover:text-white bg-primary/10 transition-all w-full block py-2 px-3 rounded-full">
-                <Link to={`messages/candidate/${dm.employer}`}>
+              <Link to={`messages/candidate/${dm.employer}`}>
+                <li className="hover:bg-primary hover:text-white bg-primary/10 transition-all w-full block py-2 px-3 rounded-full">
                   {dm[oppositeRole]}
-                </Link>
-              </li>
+                </li>
+              </Link>
             ))}
           </>
         )}
